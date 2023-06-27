@@ -34,14 +34,13 @@ while ($i <= 10) {
 </div>
 
 <style>
+  .centraliza {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 
-    .centraliza{
-        position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-    }
-
-.modal-content{
+  .modal-content {
     display: flex;
     background-color: #eceff1;
     padding-bottom: 20px;
@@ -50,94 +49,84 @@ while ($i <= 10) {
     border-radius: 10px;
     background: #ffffff;
     width: 80%;
-    font-family: inherit;
     padding: 0.6em 1.3em;
-    font-weight: 900;
     font-size: 18px;
     border: 3px solid black;
     border-radius: 0.4em;
     box-shadow: 0.1em 0.1em;
     flex-wrap: wrap;
     align-content: center;
-}
-    /* Estilos do modal
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
-}
+  }
 
-.modal-content {
-  background-color: #fff;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 300px;
-  max-width: 80%;
-}
+  .modal-content {
+    /* Resto das suas propriedades CSS existentes */
+    animation: aparecerModal 0.5s forwards;
+  }
 
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
+  @keyframes aparecerModal {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
 
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-} */
+  @keyframes desaparecerModal {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
 
+  .fadeOut {
+    animation: desaparecerModal 0.5s forwards;
+  }
 </style>
 
 <script>
-   document.addEventListener("DOMContentLoaded", function() {
-  
-  var forms = document.querySelectorAll("form");
+  document.addEventListener("DOMContentLoaded", function() {
+    var forms = document.querySelectorAll("form");
+    var modal = document.getElementById("myModal");
 
-  
-  forms.forEach(function(form) {
-    form.addEventListener("submit", function(event) {
-      event.preventDefault();
+    forms.forEach(function(form) {
+      form.addEventListener("submit", function(event) {
+        event.preventDefault();
 
-      var formId = form.getAttribute("id");
+        var formId = form.getAttribute("id");
 
-      var formData = new FormData(form);
+        var formData = new FormData(form);
 
-      var xhr = new XMLHttpRequest();
+        var xhr = new XMLHttpRequest();
 
-      <?php $arquivoBack = "back.php" ?>
+        <?php $arquivoBack = "back.php" ?>
 
-      xhr.open("POST", "<?php echo $arquivoBack?>", true);
+        xhr.open("POST", "<?php echo $arquivoBack?>", true);
 
-      xhr.onload = function() {
-        if (xhr.status === 200) {
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            var response = xhr.responseText;
 
-          var response = xhr.responseText;
+            document.getElementById("modalContent").innerHTML = response;
 
-          document.getElementById("modalContent").innerHTML = response;
-          document.getElementById("myModal").style.display = "block";
-        } else {
-            
-          console.error("Erro na requisição. Status: " + xhr.status);
-        }
-      };
+            modal.style.display = "block";
 
-      xhr.send(formData);
+            setTimeout(function() {
+              modal.classList.add("fadeOut");
+              setTimeout(function() {
+                modal.style.display = "none";
+                modal.classList.remove("fadeOut");
+              }, 500);
+            }, 2000);
+          } else {
+            console.error("Erro na requisição. Status: " + xhr.status);
+          }
+        };
+
+        xhr.send(formData);
+      });
     });
   });
-
-  document.getElementsByClassName("close")[0].addEventListener("click", function() {
-    document.getElementById("myModal").style.display = "none";
-  });
-});
 </script>
