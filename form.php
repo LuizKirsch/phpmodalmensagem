@@ -27,13 +27,39 @@ while ($i <= 10) {
 
 <!-- Modal -->
 <div id="myModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
+  <div class="modal-content centraliza">
+    <!-- <span class="close">&times;</span> -->
     <div id="modalContent"></div>
   </div>
 </div>
 
 <style>
+
+    .centraliza{
+        position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+    }
+
+.modal-content{
+    display: flex;
+    background-color: #eceff1;
+    padding-bottom: 20px;
+    margin-top: 50px;
+    margin-bottom: 90px;
+    border-radius: 10px;
+    background: #ffffff;
+    width: 80%;
+    font-family: inherit;
+    padding: 0.6em 1.3em;
+    font-weight: 900;
+    font-size: 18px;
+    border: 3px solid black;
+    border-radius: 0.4em;
+    box-shadow: 0.1em 0.1em;
+    flex-wrap: wrap;
+    align-content: center;
+}
     /* Estilos do modal
 .modal {
   display: none;
